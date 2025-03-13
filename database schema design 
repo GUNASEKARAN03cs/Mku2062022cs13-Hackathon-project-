@@ -1,0 +1,96 @@
+
+Database Schema Design
+
+1. Customers
+
+customer_id (PK, INT, AUTO_INCREMENT)
+
+name (VARCHAR)
+
+email (VARCHAR, UNIQUE)
+
+phone (VARCHAR, UNIQUE)
+
+address (TEXT)
+
+registration_date (DATETIME)
+
+
+
+2. Menu
+
+menu_id (PK, INT, AUTO_INCREMENT)
+
+item_name (VARCHAR)
+
+category (VARCHAR)
+
+price (DECIMAL)
+
+availability (BOOLEAN)
+
+
+
+3. Orders
+
+order_id (PK, INT, AUTO_INCREMENT)
+
+customer_id (FK → Customers)
+
+order_date (DATETIME)
+
+order_status (ENUM: 'Pending', 'Completed', 'Cancelled')
+
+total_amount (DECIMAL)
+
+
+
+4. Order_Details (Many-to-Many between Orders and Menu)
+
+order_detail_id (PK, INT, AUTO_INCREMENT)
+
+order_id (FK → Orders)
+
+menu_id (FK → Menu)
+
+quantity (INT)
+
+subtotal (DECIMAL)
+
+
+
+5. Payments
+
+payment_id (PK, INT, AUTO_INCREMENT)
+
+order_id (FK → Orders)
+
+payment_method (ENUM: 'Credit Card', 'PayPal', 'Cash')
+
+payment_status (ENUM: 'Pending', 'Completed', 'Failed')
+
+transaction_date (DATETIME)
+
+
+
+6. Inventory
+
+inventory_id (PK, INT, AUTO_INCREMENT)
+
+item_name (VARCHAR)
+
+stock_quantity (INT)
+
+last_updated (DATETIME)
+
+
+
+7. Delivery
+
+delivery_id (PK, INT, AUTO_INCREMENT)
+
+order_id (FK → Orders)
+
+delivery_status (ENUM: 'Out for Delivery', 'Delivered', 'Cancelled')
+
+delivery_date (DATETIME)
