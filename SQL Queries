@@ -1,0 +1,42 @@
+SQL Queries
+
+Retrieve customer order details:
+
+SELECT o.order_id, c.name, o.order_date, o.total_amount, o.order_status
+FROM Orders o
+JOIN Customers c ON o.customer_id = c.customer_id
+WHERE c.customer_id = ?;
+
+Track pending deliveries:
+
+SELECT d.delivery_id, o.order_id, c.name, d.delivery_status
+FROM Delivery d
+JOIN Orders o ON d.order_id = o.order_id
+JOIN Customers c ON o.customer_id = c.customer_id
+WHERE d.delivery_status = 'Out for Delivery';
+
+Find top-selling items:
+
+SELECT m.item_name, SUM(od.quantity) AS total_sold
+FROM Order_Details od
+JOIN Menu m ON od.menu_id = m.menu_id
+GROUP BY m.item_name
+ORDER BY total_sold DESC
+LIMIT 5;
+
+
+
+---
+
+Stored Procedure for Order Calculation
+
+DELIMITER //
+CREATE PROCEDURE CalculateOrderTotal(IN orderID INT, OUT total DECIMAL)
+BEGIN
+    SELECT SUM(od.quantity * m.price) INTO total
+    FROM Order_Details od
+    JOIN Menu m ON od.menu_id = m.menu_id
+    WHERE od.order_id = orderID;
+END //
+
+DELIMITER ;
